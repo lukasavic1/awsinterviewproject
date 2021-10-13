@@ -1,0 +1,87 @@
+{% extends "base.html" %} {% block title %}Update{% endblock %} {% block content
+    %}
+    <form method="POST">
+      <h3 align="center">Update Info</h3>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          type="name"
+          class="form-control"
+          id="name"
+          name="name"
+          placeholder="Enter Your Name"
+          value = "{{request.form['name']}}"
+        />
+      </div>
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input
+          type="age"
+          class="form-control"
+          id="age"
+          name="age"
+          placeholder="Enter Your Age"
+          value = "{{request.form['age']}}"
+        />
+      </div>
+      <div class="form-group">
+        <label for="birthday">Birthday</label>
+        <input
+          type="birthday"
+          class="form-control"
+          id="birthday"
+          name="birthday"
+          placeholder="Enter Your Birthday"
+          value = "{{request.form['birthday']}}"
+        />
+      </div>
+      <div class="form-group">
+        <label for="jobtitle">Job Title</label>
+        <input
+          type="jobtitle"
+          class="form-control"
+          id="jobtitle"
+          name="jobtitle"
+          placeholder="Enter Your Jobtitle"
+          value = "{{request.form['jobtitle']}}"
+        />
+      </div>
+      <div class="form-group">
+        <label for="employer">Employer</label>
+        <input
+          type="employer"
+          class="form-control"
+          id="employer"
+          name="employer"
+          placeholder="Enter Your Employer"
+          value = "{{request.form['employer']}}"
+        />
+      </div>
+      <div class="form-group">
+        <label for="phone_number">Phone Number</label>
+        <input
+          type="phone_number"
+          class="form-control"
+          id="phone_number"
+          name="phone_number"
+          placeholder="Enter Your Phone Number"
+          value = "{{request.form['phone_number']}}"
+        />
+      </div>
+      <div class="form-group">
+        <label for="city">City</label>
+        <input
+          type="city"
+          class="form-control"
+          id="city"
+          name="city"
+          placeholder="Enter Your City"
+          value = "{{request.form['city']}}"
+        />
+      </div>
+      <br />
+      <button type="submit" class="btn btn-primary">Update Your Info</button>
+      <br> <br />
+      <h3 align="center">Current Info</h3>
+    </form>
+    {% endblock %}
