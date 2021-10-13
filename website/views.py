@@ -13,28 +13,29 @@ client_secret = "14f2vgb5s5k1r6pbgtdh7d18p9hdosbcru43f4terj5g81litdgr"
 
 @views.route('/', methods=['GET', 'POST'])
 def home():
-    # if request.method == 'GET':
-    #     token_url = "https://interviewproject.auth.eu-central-1.amazoncognito.com/oauth2/token"
-    #     callback_uri = "http://localhost:5000/note"
-    #     code = request.values.get('code')
-    #     #code = '5d25a1c2-cb4b-491d-83ca-f824ce108d39'
-    #     auth = requests.auth.HTTPBasicAuth(client_id, client_secret)
-    #     params = {
-    #         "grant_type": "authorization_code",
-    #         "client_id": client_id,
-    #         "code": code,
-    #         "redirect_uri": callback_uri
-    #     }
-    #     response = requests.post(token_url, auth=auth, data=params)
-    #     access_token = (response.json()).get('access_token')
-    #     client = boto3.client('cognito-idp', 
-    #                 region_name='eu-central-1',
-    #                 aws_access_key_id='AKIARG535AD7AZAREKBU',
-    #                 aws_secret_access_key='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')
-    #     responseNew = client.get_user(
-    #         AccessToken = access_token
-    #     )
-    #     flash(responseNew)
+    if request.method == 'GET':
+        token_url = "https://interviewproject.auth.eu-central-1.amazoncognito.com/oauth2/token"
+        callback_uri = "https://awsproject1.lostinstrings.rs/"
+        code = request.values.get('code')
+        #code = '5d25a1c2-cb4b-491d-83ca-f824ce108d39'
+        auth = requests.auth.HTTPBasicAuth(client_id, client_secret)
+        params = {
+            "grant_type": "authorization_code",
+            "client_id": client_id,
+            "code": code,
+            "redirect_uri": callback_uri
+        }
+        response = requests.post(token_url, auth=auth, data=params)
+        access_token = (response.json()).get('access_token')
+        if(access_token != None):
+            client = boto3.client('cognito-idp', 
+                        region_name='eu-central-1',
+                        aws_access_key_id='AKIARG535AD7AZAREKBU',
+                        aws_secret_access_key='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')
+            responseNew = client.get_user(
+                AccessToken = access_token
+            )
+            flash(responseNew)
         
 
     if request.method == 'POST':
