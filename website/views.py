@@ -31,7 +31,7 @@ def login():
         "redirect_uri": callback_uri
     }
     response = requests.post(token_url, auth=auth, data=params)
-    print(response.json())
+    #print(response.json())
     access_token = (response.json()).get('access_token')
     if(access_token != None):
         client = boto3.client('cognito-idp', 
@@ -44,13 +44,14 @@ def login():
         dict = list(responseNew.values())
         email = dict[1][2].get('Value')
         #email = 'nekitamomail@gmail.com'
-
+        print(email)
     
         user = User.query.filter_by(email=email).first()
         if not user:
             new_user = User(email=email)
             db.session.add(new_user)
             db.session.commit()
+        if not current_user.is_authenticated():
             login_user(new_user, remember=True)
     
         return redirect(url_for('views.home'))
