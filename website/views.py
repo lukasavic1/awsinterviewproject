@@ -60,7 +60,7 @@ def home():
     # ovde treba da se uradi nesto ako emial nije validan i ako nema @ u sebi, onda sam nasao
     # pogresnu vrednost
 
-    return render_template("home.html", user=current_user)
+    #return render_template("home.html", user=current_user)
         
     email = current_user.email
     response = table.get_item(
