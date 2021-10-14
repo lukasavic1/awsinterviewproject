@@ -63,6 +63,7 @@ def home():
     #return render_template("home.html", user=current_user)
         
     email = current_user.email
+    #flash(email)
     response = table.get_item(
             Key={
                 'email': email
