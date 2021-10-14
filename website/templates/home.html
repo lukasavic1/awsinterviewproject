@@ -82,6 +82,71 @@
       <br />
       <button type="submit" class="btn btn-primary">Update Your Info</button>
       <br> <br />
-      <h3 align="center">Current Infooooo</h3>
+      <h3 align="center">Current Info</h3>
+      <br> <br />
+      <table class="table">
+        <tbody>
+          <tr>
+            <th scope="col">email</th>
+            <td scope="col">{{email}}</td>
+          </tr>
+          <tr>
+            <th scope="col">city</th>
+            {% if city == {}  or city == "" %}
+            <td scope="col">None</td>
+            {% else %}
+            <td scope="col">{{city}}</td>
+            {% endif %}
+          </tr>
+          <tr>
+            <th scope="col">name</th>
+            {% if name == {} or name == "" %}
+            <td scope="col">None</td>
+            {% else %}
+            <td scope="col">{{name}}</td>
+            {% endif %}
+          </tr>
+          <tr>
+            <th scope="col">birthday</th>
+            {% if birthday == {} or birthday == "" %}
+            <td scope="col">None</td>
+            {% else %}
+            <td scope="col">{{birthday}}</td>
+            {% endif %}
+          </tr>
+          <tr>
+            <th scope="col">age</th>
+            {% if age == {} or age == "" %}
+            <td scope="col">None</td>
+            {% else %}
+            <td scope="col">{{age}}</td>
+            {% endif %}
+          </tr>
+          <tr>
+            <th scope="col">jobtitle</th>
+            {% if jobtitle == {}  or jobtitle == ""%}
+            <td scope="col">None</td>
+            {% else %}
+            <td scope="col">{{jobtitle}}</td>
+            {% endif %}
+          </tr>
+          <tr>
+            <th scope="col">employer</th>
+            {% if employer == {} or employer == ""%}
+            <td scope="col">None</td>
+            {% else %}
+            <td scope="col">{{employer}}</td>
+            {% endif %}
+          </tr>
+          <tr>
+            <th scope="col">phone_number</th>
+            {% if phone_number == {} or phone_number == ""%}
+            <td scope="col">None</td>
+            {% else %}
+            <td scope="col">{{phone_number}}</td>
+            {% endif %}
+          </tr>
+        </tbody>
+
     </form>
     {% endblock %}
