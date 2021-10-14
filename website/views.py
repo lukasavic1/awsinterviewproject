@@ -14,7 +14,7 @@ client_secret = "14f2vgb5s5k1r6pbgtdh7d18p9hdosbcru43f4terj5g81litdgr"
 @views.route('/', methods=['GET', 'POST'])
 def login():
     token_url = "https://interviewproject.auth.eu-central-1.amazoncognito.com/oauth2/token"
-    callback_uri = "https://awsproject1.lostinstrings.rs/"
+    callback_uri = "https://awsinterviewprojectapp.herokuapp.com/"
     # OVO PROMENI KADA STAVLJAS NA EBEANSTALK
     #callback_uri = "http://localhost:5000/"
     code = request.values.get('code')
