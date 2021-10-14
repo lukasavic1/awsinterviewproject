@@ -51,8 +51,9 @@ def login():
             new_user = User(email=email)
             db.session.add(new_user)
             db.session.commit()
+            user = new_user
         if not current_user.is_authenticated:
-            login_user(new_user, remember=True)
+            login_user(user, remember=True)
     
         return redirect(url_for('views.home'))
 
