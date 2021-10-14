@@ -17,7 +17,9 @@ def login():
     callback_uri = "https://awsinterviewprojectapp.herokuapp.com/"
     # OVO PROMENI KADA STAVLJAS NA EBEANSTALK
     #callback_uri = "http://localhost:5000/"
+    print('working')
     code = request.values.get('code')
+    print(code)
     #flash(code)
     #code = '5d25a1c2-cb4b-491d-83ca-f824ce108d39'
     auth = requests.auth.HTTPBasicAuth(client_id, client_secret)
