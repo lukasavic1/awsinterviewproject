@@ -19,7 +19,7 @@ def login():
     #callback_uri = "http://localhost:5000/"
     print('working')
     code = request.values.get('code')
-    print(code)
+    #print(code)
     #flash(code)
     #code = '5d25a1c2-cb4b-491d-83ca-f824ce108d39'
     auth = requests.auth.HTTPBasicAuth(client_id, client_secret)
@@ -31,7 +31,7 @@ def login():
         "redirect_uri": callback_uri
     }
     response = requests.post(token_url, auth=auth, data=params)
-    #flash(response.json())
+    print(response.json())
     access_token = (response.json()).get('access_token')
     if(access_token != None):
         client = boto3.client('cognito-idp', 
