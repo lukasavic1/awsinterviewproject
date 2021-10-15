@@ -28,6 +28,11 @@ client = boto3.client('cognito-idp',
                     aws_access_key_id='AKIARG535AD7AZAREKBU',
                     aws_secret_access_key='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')
 
+clients3 = boto3.client('s3', 
+                    region_name='eu-central-1',
+                    aws_access_key_id='AKIARG535AD7AZAREKBU',
+                    aws_secret_access_key='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')
+
 def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -211,7 +216,7 @@ def download_image():
         #     headers={"Content-Disposition": "attachment;filename=test.jpg"}
         # )
 
-        return client.generate_presigned_url('get_object',
+        return clients3.generate_presigned_url('get_object',
                                      Params={'Bucket': 's3websitephotos', 'Key': image_name},
                                      ExpiresIn=60)
     return render_template("home.html", user=current_user, email = email, city = city, name = name, birthday = birthday, age = age, jobtitle = jobtitle, employer = employer, phone_number = phone_number)
