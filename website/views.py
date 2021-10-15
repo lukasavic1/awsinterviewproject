@@ -219,7 +219,7 @@ def download_image():
         url =  clients3.generate_presigned_url('get_object',
                                      Params={'Bucket': 's3websitephotos', 'Key': image_name},
                                      ExpiresIn=60)
-        return flask.redirect(url)
+        return redirect(url)
     return render_template("home.html", user=current_user, email = email, city = city, name = name, birthday = birthday, age = age, jobtitle = jobtitle, employer = employer, phone_number = phone_number)
     
 
