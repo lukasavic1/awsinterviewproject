@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, Response
 from flask_login import login_required, current_user, login_user
 from .models import User
 from . import table, db
@@ -203,7 +203,14 @@ def download_image():
         age = lista[8]
         #print(image_name)
         file_name = "profileImage" + add_extension(image_name)
-        s33.Bucket('s3websitephotos').download_file(Key = image_name, Filename = file_name)
+        #s33.Bucket('s3websitephotos').download_file(Key = image_name, Filename = file_name)
+        file = s3.get_object(Bucket='s3websitephotos', Key=image_name)
+        return Response(
+            file['Body'].read(),
+            mimetype='image/jpg',
+            headers={"Content-Disposition": "attachment;filename=test.jpg"}
+        )
+
 
     return render_template("home.html", user=current_user, email = email, city = city, name = name, birthday = birthday, age = age, jobtitle = jobtitle, employer = employer, phone_number = phone_number)
     
