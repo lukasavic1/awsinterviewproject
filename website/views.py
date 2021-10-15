@@ -3,16 +3,39 @@ from flask_login import login_required, current_user, login_user
 from .models import User
 from . import table, db
 import json
+import os
 from datetime import datetime
 import boto3
 import requests
+from werkzeug.utils import secure_filename
 views = Blueprint('views', __name__)
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 client_id = "2bp5jt844uiegflc62v3f5h22o"
 client_secret = "14f2vgb5s5k1r6pbgtdh7d18p9hdosbcru43f4terj5g81litdgr"
+s3 = boto3.client('s3',
+            region_name='eu-central-1',
+            aws_access_key_id='AKIARG535AD7AZAREKBU',
+            aws_secret_access_key='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')
+
+s33 = boto3.resource('s3')
+
+client = boto3.client('cognito-idp', 
+                    region_name='eu-central-1',
+                    aws_access_key_id='AKIARG535AD7AZAREKBU',
+                    aws_secret_access_key='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')
+
+def allowed_file(filename):
+	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def add_extension(filename):
+    return '.' + filename.rsplit('.', 1)[1].lower() 
 
 @views.route('/', methods=['GET', 'POST'])
 def login():
+
+    
+    #return redirect(url_for('views.home'))
     token_url = "https://interviewproject.auth.eu-central-1.amazoncognito.com/oauth2/token"
     callback_uri = "https://awsinterviewprojectapp.herokuapp.com/"
     # OVO PROMENI KADA STAVLJAS NA EBEANSTALK
@@ -34,10 +57,6 @@ def login():
     #print(response.json())
     access_token = (response.json()).get('access_token')
     if(access_token != None):
-        client = boto3.client('cognito-idp', 
-                    region_name='eu-central-1',
-                    aws_access_key_id='AKIARG535AD7AZAREKBU',
-                    aws_secret_access_key='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')
         responseNew = client.get_user(
             AccessToken = access_token
         )
@@ -65,7 +84,7 @@ def home():
     # pogresnu vrednost
 
     #return render_template("home.html", user=current_user)
-        
+    
     email = current_user.email
     #flash(email)
     response = table.get_item(
@@ -88,7 +107,8 @@ def home():
                 'name': {},
                 'birthday':{},
                 'jobtitle': {},
-                'age': {}
+                'age': {},
+                'image_name': {}
             }
         )
         city = None
@@ -98,15 +118,19 @@ def home():
         birthday = None
         jobtitle = None
         age = None
+        image_name = None
     else:
         lista = list(respondedItem.values())
         city = lista[0]
-        phone_number = lista[1]
-        employer = lista[2]
-        name = lista[4]
-        birthday = lista[5]
-        jobtitle = lista[6]
-        age = lista[7]
+        image_name = lista[1]
+        phone_number = lista[2]
+        employer = lista[3]
+        name = lista[5]
+        birthday = lista[6]
+        jobtitle = lista[7]
+        age = lista[8]
+
+    
     if request.method == 'POST':
         flash('Your account has been updated!')
 
@@ -117,6 +141,25 @@ def home():
         jobtitle = request.form.get('jobtitle')
         employer = request.form.get('employer')
         phone_number = request.form.get('phone_number')
+        
+
+        # update picture
+        if 'file' in request.files:
+            file = request.files['file']
+            if file.filename != '' and file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(filename)
+                print("s3bucket")
+                image_name = email + add_extension(filename)
+                s3.upload_file(
+                    Bucket = "s3websitephotos",
+                    Filename = filename,
+                    Key = image_name
+                )
+                os.remove(filename)
+            elif not allowed_file(file.filename) and file.filename != '':
+                flash('Wrong picture format. It must be one of the following: ' + 'png, jpg, jpeg, gif')
+
         table.put_item(
             Item={
                     'email':email,
@@ -127,19 +170,40 @@ def home():
                     'jobtitle': jobtitle,
                     'employer': employer,
                     'phone_number': phone_number,
+                    'image_name': image_name
             }
         )
-
-        # if len(note) < 1:
-        #     flash('Note is too short!', category='error')
-        # else:
-        #     new_note = Note(data=note, user_id=current_user.id)
-        #     db.session.add(new_note)
-        #     db.session.commit()
-        #     flash('Note added!', category='success')
+    
     return render_template("home.html", user=current_user, email = email, city = city, name = name, birthday = birthday, age = age, jobtitle = jobtitle, employer = employer, phone_number = phone_number)
 
+@views.route('/downloadImage', methods=['POST'])
+def download_image():
+    email = current_user.email
+    response = table.get_item(
+            Key={
+                'email': email
+            }
+        )
+    try:
+        respondedItem = response['Item']
+    except:
+        respondedItem = None
+    if respondedItem != None:
+        lista = list(respondedItem.values())
+        city = lista[0]
+        image_name = lista[1]
+        phone_number = lista[2]
+        employer = lista[3]
+        name = lista[5]
+        birthday = lista[6]
+        jobtitle = lista[7]
+        age = lista[8]
+        #print(image_name)
+        file_name = "profileImage" + add_extension(image_name)
+        s33.Bucket('s3websitephotos').download_file(Key = image_name, Filename = file_name)
 
+    return render_template("home.html", user=current_user, email = email, city = city, name = name, birthday = birthday, age = age, jobtitle = jobtitle, employer = employer, phone_number = phone_number)
+    
 
 # @views.route('/delete-note', methods=['POST'])
 # def delete_note():

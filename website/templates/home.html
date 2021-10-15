@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block title %}Update{% endblock %} {% block content
     %}
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
       <h3 align="center">Update Info</h3>
       <div class="form-group">
         <label for="name">Name</label>
@@ -80,6 +80,12 @@
         />
       </div>
       <br />
+      <div>
+        <label class="form-label" for="customFile">Choose Image</label>
+        <input type="file" class="form-control" name="file" autocomplete="off"/>
+      </div>
+      
+      <br> <br />
       <button type="submit" class="btn btn-primary">Update Your Info</button>
       <br> <br />
       <h3 align="center">Current Info</h3>
@@ -148,5 +154,8 @@
           </tr>
         </tbody>
 
+    </form>
+    <form action="/downloadImage" method="POST" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-primary">Download Image</button>
     </form>
     {% endblock %}
