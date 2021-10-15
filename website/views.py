@@ -18,7 +18,10 @@ s3 = boto3.client('s3',
             aws_access_key_id='AKIARG535AD7AZAREKBU',
             aws_secret_access_key='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')
 
-s33 = boto3.resource('s3')
+s33 = boto3.resource('s3',
+            region_name='eu-central-1',
+            aws_access_key_id='AKIARG535AD7AZAREKBU',
+            aws_secret_access_key='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')
 
 client = boto3.client('cognito-idp', 
                     region_name='eu-central-1',
