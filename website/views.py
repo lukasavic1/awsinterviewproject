@@ -205,13 +205,15 @@ def download_image():
         file_name = "profileImage" + add_extension(image_name)
         #s33.Bucket('s3websitephotos').download_file(Key = image_name, Filename = file_name)
         file = s3.get_object(Bucket='s3websitephotos', Key=image_name)
-        return Response(
-            file['Body'].read(),
-            mimetype='image/jpg',
-            headers={"Content-Disposition": "attachment;filename=test.jpg"}
-        )
+        # return Response(
+        #     file['Body'].read(),
+        #     mimetype='image/jpg',
+        #     headers={"Content-Disposition": "attachment;filename=test.jpg"}
+        # )
 
-
+        return client.generate_presigned_url('get_object',
+                                     Params={'Bucket': 's3websitephotos', 'Key': image_name},
+                                     ExpiresIn=60)
     return render_template("home.html", user=current_user, email = email, city = city, name = name, birthday = birthday, age = age, jobtitle = jobtitle, employer = employer, phone_number = phone_number)
     
 
